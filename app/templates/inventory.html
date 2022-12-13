@@ -1,0 +1,43 @@
+<style>
+  .background {
+    background-image: url("static/css/taobao.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 200px;
+    border: solid 2px red;
+  }
+  </style>
+  <div class="background"> </div>
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>My Inventory</h1>
+<br>
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Product ID</th>
+        <th scope="col">Product Name</th>
+        <th scpre="col">Price </th>
+        <th scope="col">Quantity</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in inventory%}
+        <tr>
+          <td>{{product.product_id}}</td>
+          <td>{{product.product_name}}</td>
+          <td>{{product.price}}</td>
+          <td>{{product.quantity}}</td>
+          <td><a class="btn btn-primary" href="{{ url_for('inventory.update_product', seller_id = product.seller_id, product_id = product.product_id) }}" role="button">Update</a></td>
+          <td><a class="btn btn-primary" href="{{ url_for('inventory.remove_product', seller_id = product.seller_id, product_id = product.product_id) }}" role="button">Remove</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+<a class="btn btn-info" href="{{ url_for('inventory.add_product') }}" role="button">Add Product</a>
+{% endblock %}

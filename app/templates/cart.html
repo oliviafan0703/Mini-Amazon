@@ -1,0 +1,180 @@
+<style>
+  .background {
+    background-image: url("static/css/taobao.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 200px;
+    border: solid 2px red;
+  }
+  </style>
+  <div class="background"> </div>
+  
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>My Cart</h1>
+
+<div class="container">
+  {% for message in get_flashed_messages() %}
+  <div class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {{ message }}
+  </div>
+  {% endfor %}
+
+  {% block page_content %}{% endblock %}
+</div>
+
+<h2>Items in cart:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Category</th>
+      <th scope="col">Seller ID</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Product Description</th>
+      <th scope="col">Price</th>
+      <th scope="col">Remove</th>
+
+    </tr>
+  </thead>
+  {% if cart_data %}
+  <tbody>
+    {% for product in cart_data%}
+      <tr>
+        <th scope="row">{{product.product_id}}</th>
+
+        <td>{{product.product_name}}</td>
+        <td>{{product.category_name}}</td>
+        <td>{{product.seller_id}}</td>
+        <td> 
+          <input type = "number" id = {{product.seller_id|string + "_" + product.product_id|string}} name="quantity" min="0" value={{product.quantity}}>
+        </td>
+        <td>{{product.product_description}}</td>
+        <td>{{product.price}}</td>
+        <!-- <td><a class="btn btn-primary" href="{{ url_for('carts.edit_item',sid = product.seller_id, pid = product.product_id)}}" role="button"><i class="fa-solid fa-pen-to-square"></i></a></td> -->
+        <td><a class="btn btn-danger" href="{{ url_for('carts.remove_item',sid = product.seller_id, pid = product.product_id)}}" role="button"><i class="fa-solid fa-trash-can"></i></a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  {% endif %}
+</table>
+
+<br>
+Total Price: {{total_before_discount}}
+<br>
+
+<br>
+Total Price After Discount Only: {{total}}
+<br>
+
+<br>
+<div style="color: aliceblue; text-align: left; margin-bottom: 25px">
+<a href="{{ url_for('carts.coupon') }}" type="button" class="btn btn-light">Enter Your Coupon</a>
+</div>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+  body {
+    font-family: Arial;
+  }
+  
+  .coupon {
+    border: 5px dotted #bbb;
+    width: 80%;
+    border-radius: 15px;
+    margin: 0 auto;
+    max-width: 600px;
+  }
+  
+  .container {
+    padding: 2px 16px;
+    background-color: #f1f1f1;
+  }
+  
+  .promo {
+    background: #ccc;
+    padding: 3px;
+  }
+  
+  .expire {
+    color: red;
+  }
+  </style>
+  </head>
+  <body>
+  
+  </body>
+
+<a class="btn btn-info"  role="button" onclick = "save_cart()">Save Cart</a>
+<a class="btn btn-info" role="button" onclick = "submit_cart()">Checkout</a>
+
+<script>
+  function save_cart(){
+    x_ids = {{x_ids|tojson}}
+    updatedCart = {}
+    x_ids.forEach(x_id => {
+          
+          count = (document.getElementById(x_id).value)
+          updatedCart[x_id] = count
+          
+      });
+    console.log(updatedCart)
+    fetch("/save_cart", {
+            "method": "POST",
+            "headers": {"Content-Type": "application/json"},
+            "body": JSON.stringify({"cart" : (updatedCart),
+            })
+        }).then((response) => window.location.replace("carts"))
+  }
+
+
+  function submit_cart(){
+    x_ids = {{x_ids|tojson}}
+    updatedCart = {}
+    x_ids.forEach(x_id => {
+          
+          count = (document.getElementById(x_id).value)
+          updatedCart[x_id] = count
+          
+      });
+    console.log(updatedCart)
+    fetch("/save_cart", {
+            "method": "POST",
+            "headers": {"Content-Type": "application/json"},
+            "body": JSON.stringify({"cart" : (updatedCart),
+            })
+        }).then((response) => response.json())
+        .then((data) => {if(data['error']=="Sorry, No Item In Cart!"){
+          window.location.replace("carts")
+        }else{
+          window.location.replace("checkout")
+        }})
+  }
+</script>
+
+<div class="coupon">
+  <div class="container">
+    <h3>Mini Taobao</h3>
+  </div>
+  <!-- <img src="/w3images/hamburger.jpg" alt="Avatar" style="width:100%;"> -->
+  <div class="contents">
+    <img src="static/css/coupon.png" alt="Avatar">
+</div>
+  <div class="container" style="background-color:white">
+    <h2><b>20% OFF YOUR PURCHASE AFTER DISCOUNT</b></h2> 
+    <p>Mini Taobao is curently offering a 20% additional off for all new customers with the New Year coupon!! </p>
+  </div>
+  <div class="container">
+    <p>Use Promo Code: <span class="promo">minitaobao</span></p>
+    <p class="expire">Expires: Feb 01, 2023</p>
+  </div>
+</div>
+
+
+{% endblock %}
+

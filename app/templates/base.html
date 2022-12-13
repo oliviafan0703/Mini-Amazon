@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Mini Amazon</title>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/example.css') }}">
+  <style>
+    .dropbtn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      text-align: left;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {background-color: #f1f1f1}
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+      background-color: #3e8e41;
+    }
+    body {
+        font-family: "Lato", sans-serif;
+    }
+
+    .main-head {
+        height: 150px;
+        background: #FFF;
+    }
+
+    .sidenav {
+        height: 150;
+        background-color: paleturquoise;
+        overflow-x: visible;
+        overflow-y: visible;
+        padding-top: 20px;
+    }
+
+    .main {
+        padding: 0px 10px;
+    }
+
+    .login-main-text {
+        margin-top: 20%;
+        padding: 60px;
+        color: #fff;
+    }
+
+    .login-main-text h2 {
+        font-weight: 300;
+    }
+
+    .btn-black {
+        background-color: #000 !important;
+        color: #fff;
+    }
+  </style>
+
+<!-- <div class="background"> </div> -->
+
+</head>
+
+<!-- <style>
+  .background {
+    background: url("static/css/taobao.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 200px;
+    border: solid 2px red;
+  }
+  </style> -->
+
+  <style> 
+    input[type=text] {
+      width: 130px;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      background-color: white;
+      background-image: url('searchicon.png');
+      background-position: 10px 10px; 
+      background-repeat: no-repeat;
+      padding: 12px 20px 12px 40px;
+      -webkit-transition: width 0.4s ease-in-out;
+      transition: width 0.4s ease-in-out;
+    }
+    
+    input[type=text]:focus {
+      width: 100%;
+    }
+    </style>
+
+<body>
+  <div class="sidenav">
+    {% block msg %}
+      <h1 style="color:rgb(2, 17, 31)">Welcome to Mini TaoBao!</h1>
+      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+        {% if current_user.is_authenticated %}
+          <div class="dropdown">
+            <span style="color:rgb(2, 17, 31)">Hello {{current_user.firstname}}! </span>
+            <div class="dropdown-content">
+              <a href="/">Home Page</a>
+              <a href="{{ url_for('users.profile') }}">Profile</a>
+              <a href="{{ url_for('carts.carts') }}">Carts</a>
+              <a href="{{ url_for('Orders.Orders') }}">Order History</a>
+              <a href="{{ url_for('Reviews.getProductReviews')}}">Feedback</a>
+              <a href="{{ url_for('Sellers.soldProducts', seller_id=current_user.id) }}">Seller Center</a>
+              <a href="{{ url_for('inventory.inventory') }}">Inventory</a>
+            </div>
+          </div>
+          <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+          {% else %}
+          <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
+        {% endif %}
+      </div>
+    {% endblock %}
+  </div>
+  <div class="main">
+    
+    {% block content %}{% endblock %}
+  </div>
+</body>
+
+</html>

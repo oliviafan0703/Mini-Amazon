@@ -1,0 +1,48 @@
+{% extends "inventory.html" %}
+
+{% block content %}
+
+<h3>Edit Product</h1>
+
+<form action="" method="post", novalidate>
+  {{ form.hidden_tag() }}
+  
+  <p>
+    {{ form.quantity.label }}<br/>
+    {{ form.quantity(size=32) }}<br/>
+    {% for error in form.quantity.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.price.label }}<br/>
+    {{ form.price(size=32) }}<br/>
+    {% for error in form.price.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.product_description.label }}<br/>
+    {{ form.product_description(size=32) }}<br/>
+    {% for error in form.product_description.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </p>
+  <p>{{ form.submit() }}</p>
+  <a class="btn btn-info" href="{{ url_for('inventory.inventory') }}" role="button">Back to Inventory</a>
+
+</form>
+
+{% endblock %}

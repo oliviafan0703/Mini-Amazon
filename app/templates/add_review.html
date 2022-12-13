@@ -1,0 +1,49 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<h1>Add Review</h1>
+
+<form action="" method="post", novalidate>
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.rating.label}}<br/>
+    {{ form.rating(size=32) }}<br/>
+    {% for error in form.rating.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.title.label }}<br/>
+    {{ form.title(size=32) }}<br/>
+    {% for error in form.title.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.content.label}}<br/>
+    {{ form.content(size=32) }}<br/>
+    {% for error in form.content.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+
+  <br>
+  </br>
+  <p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </p>
+  <p>{{ form.submit() }}</p>
+  <a class="btn btn-info" href={{ "/products/"+ product.product_id|string}} role="button">Back to Product</a>
+</form>
+
+{% endblock %}

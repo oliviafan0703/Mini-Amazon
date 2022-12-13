@@ -1,0 +1,33 @@
+{% extends "seller.html" %}
+
+{% block content %}
+
+<h1>Is the item fulfilled?</h1>
+
+<form action="" method="post", novalidate>
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.new_fulfillment }}
+    {{ form.new_fulfillment.label }}
+    <br/>
+    {% for error in form.new_fulfillment.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </p>
+  <p>{{ form.submit() }}</p>
+  <a class="btn btn-info" href="{{ url_for('inventory.inventory') }}" role="button">Back to Inventory</a>
+
+</form>
+
+{% endblock %}

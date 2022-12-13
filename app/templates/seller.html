@@ -1,0 +1,85 @@
+<!-- <style>
+  .background {
+    background-image: url("static/css/taobao.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 200px;
+    border: solid 2px red;
+  }
+  </style>
+  <div class="background"> </div> -->
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Products Sold</h1>
+<br>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+
+      <th scope="col">Order ID</th>
+      <th scope="col">Product ID</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Order Date</th>
+      <th scope="col">Buyer ID</th>
+      <th scope="col">Buyer Address</th>
+      <th scope="col">Overall Fulfillment Status</th>
+      <th scope="col">Line Order Fulfilled?</th>
+
+    </tr>
+  </thead>
+  {% if inventory_data %}
+  <tbody>
+    {% for product in inventory_data%}
+      <tr>
+        <td>{{product.order_id}}</td>
+        <td>{{product.product_uid}}</td>
+        <td>{{product.quantity}}</td>
+        <td>{{product.order_timestamp}}</td>
+        <td>{{product.buyer_id}}</td>
+        <td>{{product.buyer_address}}</td>
+        <td>{{product.overall_fulfillment}}</td>
+        <td>{{product.fulfill_status}} &nbsp; <a class="btn btn-primary" href="{{ url_for('Sellers.update_fulfillment', seller_id = product.seller_id, product_id = product.product_uid, order_id = product.order_id) }}" role="button">Update</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  {% endif %}
+</table>
+
+<br><br>
+<h1>Products Created</h1>
+<br>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+
+      <th scope="col">Product ID</th>
+      <th scope="col">Image</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Description</th>
+      <th scope="col">Price </th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  {% if created_products %}
+  <tbody>
+    {% for product in created_products%}
+      <tr>
+        <td>{{product.product_id}}</td>
+        <td> <a href = {{ "/products/"+ product.product_id|string }}><img src= {{product.image_url}} width="300" height="300"></a></td>
+        <td>{{product.product_name}}</td>
+        <td>{{product.quantity}}</td>
+        <td>{{product.product_description}}</td>
+        <td>{{product.price}}</td>
+        <td><a class="btn btn-primary" href="{{ url_for('users.edit_product', product_id = product.product_id) }}" role="button">Edit</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  {% endif %}
+</table>
+
+
+{% endblock %}

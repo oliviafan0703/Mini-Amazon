@@ -1,0 +1,50 @@
+<style>
+  .background {
+    background-image: url("static/css/taobao.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 200px;
+    border: solid 2px red;
+  }
+  </style>
+  <div class="background"> </div>
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Past Reviews:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Time</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Image</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Title</th>
+      <th scope="col">Description</th>
+      <th scope="col">Update</th>
+      <th scope="col">Remove</th>
+    </tr>
+  </thead>
+  {% if returned_productreviews %}
+  <tbody>
+    {% for review in returned_productreviews%}
+      <tr>
+        <th scope="row">{{review.time_post}}</th>
+        <td>{{review.product_name}}</td>
+        <td><img src= {{review.image_url}} width="300" height="300">
+        <td>{{review.rating}}</td>
+        <!-- <td>{{review.content}} <a class="btn btn-info" href={{ "/edit_review/"+ review.product_id|string +"/review"}} role="button">Edit Details</a> </td> -->
+        <td><strong>{{review.title}}</strong></td> 
+        <td><em>{{review.content}}</em> </td> 
+        <td><a class="btn btn-info" href="{{ url_for('Reviews.edit_review',seller_id = review.seller_id, product_id = review.product_id, rating = review.rating, title=review.title, content=review.content, product_name=review.product_name)}}" role="button">Edit Details</a> </td>
+        
+        <!-- <td><a class="btn btn-danger" href={{ "/remove_review/"+ review.product_id|string +"/review"}} role="button"><i class="fa-solid fa-trash-can"></i></a></td> -->
+        <td><a class="btn btn-danger" href="{{ url_for('Reviews.remove_review',pid = review.product_id)}}" role="button"><i class="fa-solid fa-trash-can"></i></a></td>
+        {% endfor %}
+  </tbody>
+  {% endif %}
+</table>
+
+{% endblock %}

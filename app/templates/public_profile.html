@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+  {% for message in get_flashed_messages() %}
+  <div class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {{ message }}
+  </div>
+  {% endfor %}
+
+  {% block page_content %}{% endblock %}
+</div>
+
+<h2><b> {{profile_user.firstname}}&nbsp;{{profile_user.lastname}}</p></h2>
+<p><b>User ID: </b>{{profile_user.id}} </p>
+
+<br/>
+
+{% if is_seller %}
+<h3><b>Seller Info</b></h3>
+<p><b>Email: </b>{{profile_user.email}}</p>
+{% if seller_addr %}
+<p><b>Address: </b>{{profile_user.mailing_address}}</p>
+{% else %}
+<p><b>Address: </b>No seller address info</p>
+{% endif %}
+<br>
+
+<br/>
+
+<h3><b>Seller Reviews:</b></h3>
+<a class="btn btn-info" href={{ "/profile/"+ profile_user.id|string +"/review"}} role="button">Add Review</a>
+{% if reviews %}
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">User id</th>
+        <th scope="col">Rating</th>
+        <th scope="col">Title</th>
+        <th scope="col">Content</th>
+        <th scope="col">Time Post</th>
+      </tr>
+    </thead>
+<thead class="thead-dark">
+<tbody>
+{% for r in reviews%}
+  <tr>
+    <th scope="row">{{r.user_id}}</th>
+    <td>{{r.rating}}</td>
+    <td>{{r.title}}</td>
+    <td>{{r.content}}</td>
+    <td>{{r.time_post}}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</thead>
+</table>
+{% else %}
+<p>No review for this seller.</p>
+{% endif %}
+<a class="btn btn-info" href={{ "/profile/"+ profile_user.id|string +"/review"}} role="button">Add Review</a>
+<br>
+<br>
+
+
+
+<h3><b>Products Sold:</b></h3>
+{% if seller_items %}
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Product ID</th>
+        <th scope="col">Picture</th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Product Category</th>
+      </tr>
+    </thead>
+<thead class="thead-dark">
+<tbody>
+{% for s in seller_items%}
+  <tr>
+    <th scope="row">{{s.product_id}}</th>
+    <td> <a href = {{ "/profile/"+ profile_user.id|string }}><img src= {{s.image_url}} width="100" height="100"></a></td>
+    <td>{{s.product_name}}</td>
+    <td>{{s.category_name}}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</thead>
+</table>
+{% else %}
+<p>No products sold for this seller.</p>
+{% endif %}
+
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+    </head>
+    
+    <body>
+        <header>
+            <div class="container">
+              <div class="navigation">
+        
+                <div class="logo">
+                  <i class="icon icon-basket"></i>Mini Taobao</div>
+                <div class="secure">
+                  <i class="icon icon-shield"></i>
+                  <span>Secure Checkout</span>
+        
+                </div>
+              </div>
+              <div class="notification">
+                Complete Your Purchase
+              </div>
+            </div>
+          </header>
+          <section class="content">
+        
+            <div class="container">
+        
+            </div>
+            <div class="details shadow">
+              <div class="details__item">
+        
+                <div class="item__image">
+                  <img class="iphone" src="static/css/checkout.png" alt="">
+                </div>
+                <div class="item__details">
+                  <div class="item__details">
+                    <div class="item__title">
+                      Original Total Price
+                    </div>
+                    <div class="item__price">
+                      ${{total_before_discount}} USD
+                    </div>
+                    <br>
+                  <div class="item__title">
+                    Total Price of Your Order after Discount
+                  </div>
+                  <div class="item__price">
+                    ${{total}} USD
+                  </div>
+                  <br>
+                  <div class="item__title">
+                    Total Price of Your Order after Coupon
+                  </div>
+                  <div class="item__price">
+                    ${{total_new}} USD
+                  </div>
+                  <br>
+                  <div class="item__title">
+                    Number of Items in Your Order
+                  </div>
+                  <div class="item__price">
+                    {{num_products}}
+                  </div>
+                  <table>
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                  
+                      </tr>
+                    </thead>
+                    {% if products %}
+                    <tbody>
+                      {% for id,product in products.items()%}
+                        <tr>
+                          <td>{{product.img}}</td>
+                          <td>{{product.name}}</td>
+                          <td>{{product.quantity}}</td>
+                          <td>{{product.price}}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                    {% endif %}
+                  </table>
+
+
+
+
+
+        
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="discount"></div>
+        
+            <div class="container">
+              <div class="payment">
+                <div class="payment__title">
+                  Payment Method
+                </div>
+                <div class="payment__types">
+                  <div class="payment__type payment__type--cc active"><button onclick="myFunction()">
+                    <i class="icon icon-credit-card"></i>Credit Card</button></div>
+                  <div class="payment__type payment__type--paypal"><button onclick="myFunction2()">
+                    <i class="icon icon-paypal"></i>Pay with Deposit</button></div>
+                </div>
+        
+                <div class="payment__info" id="payment__info">
+                  <div class="payment__cc">
+                    <div class="payment__title">
+                      <i class="icon icon-user"></i>Personal Information
+                    </div>
+                    <form>
+                      <div class="form__cc">
+                        <div class="row">
+                          <div class="field">
+                            <div class="title">Credit Card Number
+                            </div>
+                            <input type="text" class="input txt text-validated" value="4542 9931 9292 2293" />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="field small">
+                            <div class="title">Expiry Date
+                            </div>
+                            <select class="input ddl">
+                              <option selected>01</option>
+                              <option>02</option>
+                              <option>03</option>
+                              <option>04</option>
+                              <option>05</option>
+                              <option>06</option>
+                              <option>07</option>
+                              <option>08</option>
+                              <option>09</option>
+                              <option>10</option>
+                              <option>11</option>
+                              <option>12</option>
+                            </select>
+                            <select class="input ddl">
+                              <option>01</option>
+                              <option>02</option>
+                              <option>03</option>
+                              <option>04</option>
+                              <option>05</option>
+                              <option>06</option>
+                              <option>07</option>
+                              <option>08</option>
+                              <option>09</option>
+                              <option>10</option>
+                              <option>11</option>
+                              <option>12</option>
+                              <option>13</option>
+                              <option>14</option>
+                              <option>15</option>
+                              <option selected>16</option>
+                              <option>17</option>
+                              <option>18</option>
+                              <option>19</option>
+                              <option>20</option>
+                              <option>21</option>
+                              <option>22</option>
+                              <option>23</option>
+                              <option>24</option>
+                              <option>25</option>
+                              <option>26</option>
+                              <option>27</option>
+                              <option>28</option>
+                              <option>29</option>
+                              <option>30</option>
+                              <option>31</option>
+                            </select>
+                          </div>
+                          <div class="field small">
+                            <div class="title">CVV Code
+                            </div>
+                            <input type="text" class="input txt" />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="field">
+                            <div class="title">Name on Card
+                            </div>
+                            <input type="text" class="input txt" />
+                          </div>
+                        </div>
+        
+                      </div>
+                    </form>
+                  </div>
+                  
+                </div>
+                <div id="deposit_pay" style="display: none;">
+                  <h1>Your current balance is:</h1>
+                    <div class="item__price">${{profile_user.balance}} USD</div>
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="payment__shipping">
+                <div class="payment__title">
+                  <i class="icon icon-plane"></i> Confirm Shiping Information
+                </div>
+                <div class="details__user">
+                  <div class="user__name">{{profile_user.firstname}} {{profile_user.lastname}}
+                    <br> Email: {{profile_user.email}}</div>
+                  <div class="user__address"> Shipping Address: {{profile_user.mailing_address}}
+                    </div>
+                </div>
+    
+              </div>
+              <div class="container">
+                {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            
+                {% block page_content %}{% endblock %}
+            </div>
+              <div class="actions">
+                <button class="btn btn-info" role="button" onclick = "submit_order()">Checkout</button>
+              </div>
+              <body>
+                <button><a href="/">Back To Home Page</a></button>
+                <br>
+            </body>
+              
+          </section>
+          </div>
+    </body>
+
+    <script>
+
+function submit_order(){
+  myCart = {{products|tojson}}
+    console.log(myCart)
+  fetch("/submit_order", {
+          "method": "POST",
+          "headers": {"Content-Type": "application/json"},
+          "body": JSON.stringify({"cart" : (myCart),
+          "total_price":{{total}}
+          })
+      }).then((response) => 
+      response.json())
+     .then((data) => {if(data['error']=="Seller does not have enough inventory!"){
+        window.location.replace("checkout")
+     }else if(data['error']=="Insufficient Funds!"){
+        console.log(data['error'])
+        window.location.replace("checkout")
+     }else if(data['error']=="Successfully Purchase"){
+        window.location.replace("success")
+     }
+     });
+  }
+
+  function myFunction(){
+    var x = document.getElementById("payment__info");
+    var y = document.getElementById("deposit_pay");
+    if (x.style.display === "none") {
+      y.style.display = "none";
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+      y.style.display = "block";
+    }
+  }
+
+  function myFunction2(){
+    var x = document.getElementById("deposit_pay");
+    var y = document.getElementById("payment__info");
+    if (x.style.display === "none") {
+      y.style.display = "none";
+      x.style.display = "block";
+    } else {
+      y.style.display = "block";
+      x.style.display = "none";
+    }
+  }
+    </script>
+
+<script>    
+  var temp = console.log(localStorage.getItem("serialNumber"));
+</script>
+
+</html>

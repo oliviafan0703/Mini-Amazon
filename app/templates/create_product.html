@@ -1,0 +1,66 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<h1>Create Product</h1>
+
+<form action="" method="post", novalidate>
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.Category.label }}<br/>
+    {{ form.Category(size=32) }}<br/>
+    {% for error in form.Name.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.Name.label }}<br/>
+    {{ form.Name(size=32) }}<br/>
+    {% for error in form.Name.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.Price.label }}<br/>
+    {{ form.Price(size=32) }}<br/>
+    {% for error in form.Price.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.Description.label }}<br/>
+    {{ form.Description(size=32) }}<br/>
+    {% for error in form.Description.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.Image_url.label }}<br/>
+    {{ form.Image_url(size=32) }}<br/>
+    {% for error in form.Image_url.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.Quantity.label }}<br/>
+    {{ form.Quantity(size=32) }}<br/>
+    {% for error in form.Quantity.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </p>
+  <p>{{ form.submit() }}</p>
+  <a class="btn btn-info" href="{{ url_for('index.index') }}" role="button">Back to Main Page</a>
+</form>
+
+{% endblock %}

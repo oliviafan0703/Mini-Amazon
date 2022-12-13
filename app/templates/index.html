@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+
+
+
+<h2>Products for sale:</h2>
+
+<form action="" method="post" novalidate>
+  {{ form.hidden_tag() }}
+  <p>
+    Search for a product<br/>
+    {{ form.id(size=32) }}<br/>
+    {% for error in form.id.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </p>
+  {{ form.submit(class_="btn btn-black") }}
+</form>
+<!-- <form>
+  <input type="text" name="search" placeholder="Search..">
+</form> -->
+
+
+<label for="sort">Sort By:</label>
+<form action="" id = "sort" method="post" novalidate> 
+  <select name="sort" id="sort" onchange='if(this.value != 0) { this.form.submit(); }'>
+    <option value="id_asc" {% if selectedSort == "id_asc"%} selected{% endif %}>-</option>
+    <option value="price_asc"  {% if selectedSort == "price_asc"%} selected{% endif %}>Sort by Price Asc.</option>
+    <option value="price_desc" {% if selectedSort == "price_desc"%} selected{% endif %}>Sort by Price Desc.</option>
+  </select>
+</form>
+
+
+<label for="filter">Sort By:</label>
+<form action="" id = "filter" method="post" novalidate> 
+  <select name="filter" id="filter" onchange='if(this.value != 0) { this.form.submit(); }'>
+    <option value="all"  {% if selected_category == "all"%} selected{% endif %}>All Products</option>
+    {% for name in category_names %}
+    <option value= "{{name}}" {% if selected_category == name %} selected{% endif %}>{{name}}</option>"
+    {% endfor %}
+  </select>
+</form>
+
+
+<!-- <form action="" id = "available" method="post" novalidate> 
+  <label for="available">Show Available Products</label>
+  <input type="checkbox" id="available" name="available" value="show_available" onchange = 'this.form.submit()'>
+</form> -->
+
+
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr onClick= "www.google.com">
+      <th scope="col">Product ID</th>
+      <th scope="col">Image</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Lowest Available Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in avail_products%}
+      <tr onclick= "gen(this)">
+        <th scope="row">{{product.product_id}}</th>
+        <td> <a href = {{ "/products/"+ product.product_id|string }}><img src= {{product.image_url}} width="300" height="300"></a></td>
+        <td>{{product.product_name}}</td>
+        <td>{{product.price}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+<script type="text/javascript" charset="utf-8">
+  function gen(e){
+var year = e.getElementsByTagName("td")["0"].innerText
+var month =  e.getElementsByTagName("td")["1"].innerText
+var date = e.getElementsByTagName("td")["2"].innerText
+console.log("hi")
+
+var list = {
+ year: year,
+ month: month,
+ date: date
+}
+  
+fetch(`${window.origin}/print`, {
+  method: "POST",
+  credentials: "include",
+  body: JSON.stringify(list),
+  cache: "no-cache",
+  headers: new Headers({
+    "content-type": "application/json"
+  })
+})
+}
+</script>
+
+
+
+<!-- Pagination Links-->
+<div class="text-right">
+  <a href="{{ url_for('index.index', page=page-1) }}"
+     class="btn btn-outline-dark 
+     {% if page == 1 %}disabled{% endif %}">
+      &laquo;
+  </a>
+<!-- Loop through the number of pages to display a link for each-->
+  {% for page_num in pagination_data %}
+{% if page_num %}
+<!-- Check for the active page and set the link to "Active"-->
+          {% if page == page_num %}
+          <a href="{{ url_for('index.index', page=page_num) }}"
+             class="btn btn-dark">
+              {{ page_num }}
+          </a>
+          {% else %}
+          <a href="{{ url_for('index.index', page=page_num) }}"
+             class="btn btn-outline-dark">
+              {{ page_num }}
+          </a>
+          {% endif %}
+      {% else %}
+          ...
+      {% endif %}
+  {% endfor %}
+  <a href="{{ url_for('index.index', page=page+1) }}"
+     class="btn btn-outline-dark 
+     {% if page == pagination_total %}disabled{% endif %}">
+      &raquo;
+  </a>
+</div>
+<p class="text-right mt-3">
+ Showing page {{ page }} of {{ pagination_total }}
+</p>
+
+
+
+
+{% endblock %}
+

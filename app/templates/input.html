@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Input</h1>
+
+<form action="action_to_perform_after_submission" method = "POST">
+    <p>Field1 <input type = "text" name = "Field1_name" /></p>
+    <p><input type = "submit" value = "submit" /></p>
+</form>
+
+<form action="/data" method = "POST">
+    <p>Input <input type = "text" name = "Input" /></p>
+    <p><input type = "submit" value = "Submit" /></p>
+</form>
+
+{% for key,value in form_data.items() %}
+<h2> {{key}}</h2>
+<p> {{value}}</p>
+{% endfor %}

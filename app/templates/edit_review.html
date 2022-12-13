@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h1>Edit Review</h1>
+
+<form action="" method="post">
+    <label for="seller_id">Product Name: 
+      <input name="product_name" value="{{product_name}}" readonly>
+    </label>
+    <br>
+    <label for="rating">Rating: 
+      <input name="rating" value="{{rating}}" >
+    </label>
+    <br>
+    <label for="title">Title: 
+      <input name="title" value="{{title}}" >
+    </label>
+    <br>
+    <label for="content">Content: 
+      <input name="content" value="{{content}}" >
+    </label>
+    <br>
+    <input type="submit" class="btn btn-primary">
+    <br>
+  </form>
+{% endblock %}

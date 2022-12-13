@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="" method="post" novalidate>
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.coupon.label }}<br/>
+    {{ form.coupon(size=32) }}<br/>
+    {% for error in form.coupon.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </p>
+  {{ form.submit(class_="btn btn-black") }}
+  <a class="btn btn-secondary" href="/" role="button">Back To Home Page</a>
+  <!-- <input type="button" value="mybutton1" onclick="submit_coupon(this)">test -->
+</form>
+
+
+<p>
+Now your total price is : {{total}}
+</p>
+
+<p>
+  See our past coupon below!
+</p>
+
+<br>
+</br>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+  body {
+    font-family: Arial;
+  }
+  
+  .coupon-card{
+    background: linear-gradient(135deg, #7158fe, #9d4de6);
+    color: #fff;
+    text-align: center;
+    padding: 40px 80px;
+    border-radius: 15px;
+    box-shadow: 0 10px 10px 0 rgba(0,0,0,0.15);
+    position: relative;
+
+}
+.logo{
+    width: 300px;
+    border-radius: 300px;
+    margin-bottom: 40px;
+
+}
+.coupon-card h3{
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 40px;
+
+}
+.coupon-card p{
+    font-size: 15px;
+
+}
+.coupon-row{
+    display: flex;
+    align-items: center;
+    margin: 25px auto;
+    width: fit-content;
+
+}
+#cpnCode{
+    border: 1px dashed #fff;
+    padding: 10px 20px;
+    border-right: 0;
+
+}
+#cpnBtn{
+    border: 1px solid #fff;
+    background: #fff;
+    padding: 10px 20px;
+    color: #7158fe;
+    cursor: pointer;
+}
+.circle1, .circle2{
+    background: #f0fff3;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+}
+.circle1{
+    left: -25px;
+}
+.circle2{
+    right: -25px;
+}
+  
+.container {
+    padding: 2px 16px;
+    background-color: #f1f1f1;
+}
+  
+.promo {
+    background: #ccc;
+    padding: 3px;
+}
+  
+.expire {
+    color: #D7C0BB;
+}
+</style>
+</head>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Coupon Code </title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+      <div class="coupon-card">
+          <img src="static/css/pastcoupon.png" class="logo">
+          <h3>20% off for Black Friday<br>using HDFC Credit Card</h3>
+          <di class="coupon-row">
+              <span id="cpnCode">minitaobao</span>
+              <span id="cpnBtn">Copy Code</span>
+          </di>
+          <!-- <p>Valid Till: 20 Dec, 2022</p> -->
+          <p class="expire">Expires: Dec 20, 2022</p>
+      </div>
+  </div>
+</body>
+
+<!-- <script>
+//   function submit_coupon(this) {
+//     var total_new = total
+//     this.value = total_new
+//     console.log(this.value);
+//     print("THis value")
+//     print(total_new)
+//     return render_template('checkout.html', total = total)
+// }
+    $(function submit_coupon(){
+            //rest of the code
+            localStorage.setItem('value_after_coupon',value)
+            url = "checkout.html";
+            document.location.href= url;
+            console.log("let's get this party started");
+        });
+</script> -->
+
+<script>    
+  localStorage.setItem("serialNumber", {{total}});
+</script>
+
+<!-- <script>
+  function getData() {
+      var TempVar = document.getElementById('TempVar').value;
+      localStorage.setItem("txtValue", TempVar);
+  }
+</script> -->
+
+
+{% endblock %}

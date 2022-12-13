@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+  {% for message in get_flashed_messages() %}
+  <div class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {{ message }}
+  </div>
+  {% endfor %}
+
+  {% block page_content %}{% endblock %}
+</div>
+<style>
+  .background {
+    background-image: url("static/css/taobao.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 200px;
+    border: solid 2px red;
+  }
+  </style>
+<br><br>
+
+
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome Icon Library -->
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/barrating.css') }}"> -->
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial;
+    /* margin: 0 auto; Center website */
+    /* max-width: 800px; Max width */
+    padding: 20px;
+  }
+  
+  .heading {
+    font-size: 25px;
+    margin-right: 25px;
+  }
+  
+  .fa {
+    font-size: 25px;
+  }
+  
+  .checked {
+    color: orange;
+  }
+  
+  /* Three column layout */
+  .side {
+    float: left;
+    width: 15%;
+    margin-top:10px;
+  }
+  
+  .middle {
+    margin-top:10px;
+    float: left;
+    width: 70%;
+  }
+  
+  /* Place text to the right */
+  .right {
+    text-align: right;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* The bar container */
+  .bar-container {
+    width: "100";
+    background-color: #f1f1f1;
+    text-align: center;
+    color: white;
+  }
+
+
+  .bar-5 {min-width: count5p; height: 18px; background-color: #04AA6D;}
+  .bar-4 {min-width: count4p; height: 18px; background-color: #2196F3;}
+  .bar-3 {min-width: count3p; height: 18px; background-color: #00bcd4;}
+  .bar-2 {min-width: count2p; height: 18px; background-color: #ff9800;}
+  .bar-1 {min-width: count1p; height: 18px; background-color: #f44336;}
+/*   
+  var elem = document.getElementById('chart');
+  elem.style.width = "%"; */
+  /* Responsive layout - make the columns stack on top of each other instead of next to each other */
+  @media (max-width: 400px) {
+    .side, .middle {
+      width: 100%;
+    }
+    .right {
+      display: none;
+    }
+  }
+  </style>
+  </head>
+  <body>
+  
+    
+
+    <style type="text/css">
+      #wrap {
+         width:100%;
+         margin:0 auto;
+      }
+      #left_col {
+         float:left;
+         width:30%;
+      }
+      #right_col {
+        padding-left: 10%;
+        float:right;
+         width:70%;
+      }
+      </style>
+      
+      <div id="wrap">
+          <div id="left_col">
+            <img src = {{product.image_url}} width = 100% height = 100%/>
+          </div>
+          <div id="right_col">
+            <h3>{{product.product_name}}</h3>
+            
+            <style>
+              .stars a {
+                font-size: 150%;
+                opacity:30%;
+                cursor: pointer;
+              }
+              .stars p {
+                opacity:100%;
+                font-size: 150%;
+                cursor: pointer;
+                display: inline 
+              }
+              .rating p {
+                font-size: 80%;
+                color: blue;
+              }
+
+            </style>
+            <div class = "stars">
+              {% for i in range(average_rating|round|int)%}
+              <p>⭐</p>
+              {% endfor %}
+        
+              {% for i in range(5 - average_rating|round|int)%}
+              <a>⭐</a>
+              {% endfor %}
+              <br/>
+            
+            </div>
+            <div class = "rating">
+              <p>{{'%0.2f' % average_rating|float}} Stars based on {{length}} reviews</p>
+            </div>
+            
+          </div>
+      </div>
+
+
+
+
+<br/>
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr onClick= "www.google.com">
+        <th scope="col">Seller</th>
+        <th scope="col">Product Description</th>
+        <th scope="col">Price</th>
+        <th scope="col">Inventory</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for seller in sellers%}
+        <tr >
+          <th scope="row"><a href = "{{ url_for('public_view.public_view', uid = seller.id) }}"> {{seller.firstname + " " + seller.lastname[:1] +"." }} </a> </th>
+          <td>{{seller.product_description}}</td>
+          <td>{{seller.price}}</td>
+          <td>{{seller.quantity}}</td>
+          <td> 
+            <input type = "number" id= {{seller.id}} name="quantity" min="0" max={{seller.quantity}}>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <button style="float: right;" onclick="add_to_cart()">Add to Cart</button>
+  <br/>
+  <br/>
+  <br/>
+
+  <h2>Sellers Analytics:</h2>
+  </style>
+  <body>
+  <h4><i> Popularity Visualization: Product Sales by Seller </i></h4>
+  <div id='chart' class='chart'”></div>
+  </body>
+
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+  <script type='text/javascript'>
+  var graphs = {{graphJSON | safe}};
+  Plotly.plot('chart',graphs,{});
+  </script>
+  </html>
+  
+
+  <script>
+    function add_to_cart(){
+        sellers = {{seller_ids|tojson}}
+        entries = {}
+
+        sellers.forEach(seller_id => {
+            console.log(seller_id);
+            qty = document.getElementById(seller_id).value
+            if (qty != ""){
+              entries[seller_id] = qty;
+            }
+        });
+
+        // data = {}
+        // data[entries] = entries
+        // data[product_id] = {{product.product_id}}
+        console.log(entries)
+
+        fetch("/cart_add", {
+            "method": "POST",
+            "headers": {"Content-Type": "application/json"},
+            "body": JSON.stringify({"data" : (entries),
+              "product_id" : {{product.product_id}} 
+            })
+        }).then((response) => response.json())
+        .then((data) => {if(data['error']=="Not Logged In"){
+          window.alert("Please Log In to Continue!")
+        }else{
+          console.log("success")
+          window.alert("Added to Cart Successfully!")
+        }}).then((response)=>window.location.replace(window.location.href))
+    }
+  </script>
+
+
+  <h2>Reviews:</h2>
+  <a class="btn btn-info" href={{ "/products/"+ product.product_id|string +"/review"}} role="button">Add Review</a>
+  <table class='table table-hover table-bordered container'>
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Buyer</th>
+          <th scope="col">Rating</th>
+          <th scope="col">Review</th>
+          <th scope="col">Time Posted</th>
+          <th scope="col">Opinion</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for review in reviews%}
+          <tr onclick= >
+            <th scope="row">{{review.firstname[:1] + "." + review.lastname[:1] + "." }}</th>
+            <td>{{review.rating|string + " / 5"}}</td>
+            <td>{{review.title}} <br> <em>{{review.content}}</em></td>
+            <td>{{review.time_post}}</td>
+            <td>
+                <head>
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+                </head>
+                <a href="{{ url_for('Reviews.upvote', product_id = review.product_id, user_id = review.user_id) }}">
+                <div class="upvote button">
+                <i style="font-size:30px" class="fa">&#xf087;</i>
+                </div>
+                </a>
+                {{review.num_upvotes}}
+                <a href="{{ url_for('Reviews.downvote', product_id = review.product_id, user_id = review.user_id) }}">
+                  <div class="downvote button">
+                <i style="font-size:30px" class="fa">&#xf165;</i>
+                </div>
+                </a>
+            </td>     
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+ 
+
+
+
+</body>
+{% endblock %}

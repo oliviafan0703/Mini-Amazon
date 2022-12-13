@@ -1,0 +1,40 @@
+
+{% extends "profile.html" %}
+
+{% block content %}
+<h1>Edit Profile</h1>
+
+<div class="container">
+  {% for message in get_flashed_messages() %}
+  <div class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {{ message }}
+  </div>
+  {% endfor %}
+
+  {% block page_content %}{% endblock %}
+</div>
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <label for="firstname">First Name: 
+      <input name="firstname" value="{{profile_user.firstname}}" >
+    </label>
+    <br>
+    <label for="lastname">Last Name: 
+      <input name="lastname" value="{{profile_user.lastname}}" >
+    </label>
+    <br>
+    <label for="email">Email: 
+      <input name="email" value="{{profile_user.email}}" >
+    </label>
+    <br>
+    <label for="mailingaddress">Mailing Address: 
+      <input name="mailingaddress" value="{{profile_user.mailing_address}}" >
+    </label>
+    <br>
+    <input type="submit" class="btn btn-primary">
+    <br>
+    <a class="btn btn-info" href="{{ url_for('users.profile', uid=current_user.id) }}" role="button">Back to Profile Page</a>
+  </form>
+{% endblock %}
